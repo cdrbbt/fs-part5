@@ -23,6 +23,11 @@ const App = () => {
     }
   }, []) 
 
+  const logout = () => {
+    window.localStorage.removeItem('user')
+    setUser(null)
+  }
+
   const login = () => (
     <Login
       setUser={setUser}
@@ -31,6 +36,7 @@ const App = () => {
   
   const blog = () => (
     <>
+      <button onClick={logout}>Logout</button>
       <h2>blogs</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
