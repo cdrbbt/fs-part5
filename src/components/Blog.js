@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 //Toggleable seems to actually work just fine?
 //import Toggleable from './Toggleable'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
 
   const [visibility, setVisibility] = useState(false)
 
@@ -19,13 +19,19 @@ const Blog = ({ blog }) => {
 
   const changeVisibility = () => setVisibility(!visibility)
 
+
+  
+  const like = () => {
+    updateBlog(blog)
+  }
+
   const details = () => {
     if (!visibility) return null
     return (
       <div>
         <p>{`author: ${blog.author}`}</p>
-        <p>{`likes: ${blog.likes}`}</p>
         <p>{`url: ${blog.url}`}</p>
+        <p>{`likes: ${blog.likes}`} <button onClick={like}>Like</button></p> 
       </div>
     )
   }

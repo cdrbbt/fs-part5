@@ -48,6 +48,31 @@ const App = () => {
     }
   }
 
+  const updateBlog = async(blog) => {
+
+    //server should ignore everything but the likes field, but following insturctions just in case
+    //once again updating a blog returns a blog with an unpopulated user field
+    const updatedBlog = {
+      user: blog.user.id,
+      likes: blog.likes + 1,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url,
+      id: blog.id
+    }
+    try {
+      const newBlog = await blogService.update(updatedBlog)
+
+      //updating the blog list to reflect the change, unfortunately the updated blog goes to the end of the list
+      const updatedBlogs = blogs.filter(b => b.id !== blog.id).concat(newBlog)
+      setBlogs(updatedBlogs)
+    } catch (e) {
+      console.log(e)
+      setMessage(`Error: ${e.response.data.error}`)
+      setTimeout(() => setMessage(null), 5000)
+    }
+  }
+
   const login = () => (
     <Login
       setMessage={setMessage}
@@ -67,7 +92,7 @@ const App = () => {
       </Toggleable>
       <h2>blogs</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
       )}
     </>
   )
