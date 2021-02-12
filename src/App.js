@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Login from './components/Login'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import BlogCreationFrom from './components/BlogCreationForm'
+import Toggleable from './components/Toggleable'
 
 const App = () => {
+
+  const noteToggle = useRef()
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
@@ -31,6 +34,20 @@ const App = () => {
     setUser(null)
   }
 
+  //!!the response from blog creation returns a blog object with the user field not populated
+  const createBlog = async (blog) => {
+    try {
+      const data = await blogService.create(blog)
+      setMessage(`Blog ${data.title} by ${data.author} created`)
+      setTimeout(() => setMessage(null), 5000)
+      setBlogs(blogs.concat(data))
+      noteToggle.current.toggleVisibility()
+    } catch (e) {
+      setMessage(`Error: ${e.response.data.error}`)
+      setTimeout(() => setMessage(null), 5000)
+    }
+  }
+
   const login = () => (
     <Login
       setMessage={setMessage}
@@ -41,11 +58,13 @@ const App = () => {
   const blog = () => (
     <>
       <button onClick={logout}>Logout</button>
-      <BlogCreationFrom
-        blogs={blogs}
-        setBlogs={setBlogs}
-        setMessage={setMessage}
-      />
+      <Toggleable
+        buttonLabel="new note"
+        ref={noteToggle}>
+        <BlogCreationFrom
+          createBlog={createBlog}
+        />
+      </Toggleable>
       <h2>blogs</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
