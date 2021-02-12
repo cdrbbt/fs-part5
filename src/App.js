@@ -16,7 +16,7 @@ const App = () => {
   //blogs arent shown when not logged in but still loaded?
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs(blogs.sort((a, b) => b.likes - a.likes))
     )  
   }, [])
 
@@ -63,13 +63,28 @@ const App = () => {
     try {
       const newBlog = await blogService.update(updatedBlog)
 
-      //updating the blog list to reflect the change, unfortunately the updated blog goes to the end of the list
+      //blogs jump after like update due to sorting
       const updatedBlogs = blogs.filter(b => b.id !== blog.id).concat(newBlog)
-      setBlogs(updatedBlogs)
+      setBlogs(updatedBlogs.sort((a,b) => b.likes - a.likes))
     } catch (e) {
       console.log(e)
       setMessage(`Error: ${e.response.data.error}`)
       setTimeout(() => setMessage(null), 5000)
+    }
+  }
+
+  const deleteBlog = async (blog) => {
+    if (window.confirm(`Delete blog ${blog.title}?`)){
+      try {
+        await blogService.remove(blog)
+        setMessage('Blog deleted')
+        setTimeout(() => setMessage(null), 5000)
+        setBlogs(blogs.filter(b => b.id !==blog.id))
+      } catch (e) {
+        console.log(e)
+        setMessage(`Error: ${e.response.data.error}`)
+        setTimeout(() => setMessage(null), 5000)
+      }
     }
   }
 
@@ -92,7 +107,7 @@ const App = () => {
       </Toggleable>
       <h2>blogs</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog}/>
       )}
     </>
   )

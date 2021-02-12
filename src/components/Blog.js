@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 //Toggleable seems to actually work just fine?
 //import Toggleable from './Toggleable'
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ blog, updateBlog, deleteBlog }) => {
 
   const [visibility, setVisibility] = useState(false)
 
@@ -19,7 +19,11 @@ const Blog = ({ blog, updateBlog }) => {
 
   const changeVisibility = () => setVisibility(!visibility)
 
-
+  const removeBlog = () => {
+    const loggedInAs = JSON.parse(window.localStorage.getItem('user')).username
+    if (blog.user.username !== loggedInAs) return null
+    return (<button onClick={()=>deleteBlog(blog)}>delete</button>)
+  }
   
   const like = () => {
     updateBlog(blog)
@@ -32,6 +36,7 @@ const Blog = ({ blog, updateBlog }) => {
         <p>{`author: ${blog.author}`}</p>
         <p>{`url: ${blog.url}`}</p>
         <p>{`likes: ${blog.likes}`} <button onClick={like}>Like</button></p> 
+        {removeBlog()}
       </div>
     )
   }

@@ -18,7 +18,6 @@ const create = async (blog) => {
 
 const update = async (blog) => {
   const url = baseUrl.concat(blog.id)
-  console.log(baseUrl)
   const config = {
     headers: {Authorization: token}
   }
@@ -26,8 +25,19 @@ const update = async (blog) => {
   return res.data
 }
 
+//maybe should only take id as input
+const remove = async (blog) => {
+  const url = baseUrl.concat(blog.id)
+  const config = {
+    headers: {Authorization: token}
+  }
+  const res = await axios.delete(url, config)
+  console.log(res)
+  return res.data
+}
+
 const setToken = (newToken) => {
   token = `bearer ${newToken}`
 }
 
-export default { getAll, create, update, setToken }
+export default { getAll, create, update, remove, setToken }
