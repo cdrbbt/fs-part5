@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
-import blogService from './services/blogs'
 import Login from './components/Login'
+import Notification from './components/Notification'
+import blogService from './services/blogs'
 import BlogCreationFrom from './components/BlogCreationForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
+  const [message, setMessage] = useState(null)
 
   //blogs arent shown when not logged in but still loaded?
   useEffect(() => {
@@ -31,6 +33,7 @@ const App = () => {
 
   const login = () => (
     <Login
+      setMessage={setMessage}
       setUser={setUser}
     />
   )
@@ -38,7 +41,11 @@ const App = () => {
   const blog = () => (
     <>
       <button onClick={logout}>Logout</button>
-      <BlogCreationFrom/>
+      <BlogCreationFrom
+        blogs={blogs}
+        setBlogs={setBlogs}
+        setMessage={setMessage}
+      />
       <h2>blogs</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
@@ -48,6 +55,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={message}/>
       {user === null
         ? login()
         : blog()
