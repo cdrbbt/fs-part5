@@ -33,8 +33,7 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
   const details = () => {
     if (!visibility) return null
     return (
-      <div>
-        <p>{`author: ${blog.author}`}</p>
+      <div className="details">
         <p>{`url: ${blog.url}`}</p>
         <p>{`likes: ${blog.likes}`} <button onClick={like}>Like</button></p>
         {removeBlog()}
@@ -43,14 +42,14 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
-      {blog.title}
+    <div style={blogStyle} className="blog">
+      {`${blog.title} by ${blog.author}`}
       <button onClick={changeVisibility}>{label}</button>
       {details()}
     </div>
   )}
 
-Blog.PropTypes = {
+Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   updateBlog: PropTypes.func.isRequired,
   deleteBlog: PropTypes.func.isRequired

@@ -54,7 +54,7 @@ const Login = ({ setUser, setMessage }) => {
   )
 }
 
-Login.PropTypes = {
+Login.propTypes = {
   setUser: PropTypes.func.isRequired,
   setMessage: PropTypes.func.isRequired
 }
