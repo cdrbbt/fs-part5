@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 //Toggleable seems to actually work just fine?
 //import Toggleable from './Toggleable'
@@ -22,9 +23,9 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
   const removeBlog = () => {
     const loggedInAs = JSON.parse(window.localStorage.getItem('user')).username
     if (blog.user.username !== loggedInAs) return null
-    return (<button onClick={()=>deleteBlog(blog)}>delete</button>)
+    return (<button onClick={() => deleteBlog(blog)}>delete</button>)
   }
-  
+
   const like = () => {
     updateBlog(blog)
   }
@@ -35,7 +36,7 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
       <div>
         <p>{`author: ${blog.author}`}</p>
         <p>{`url: ${blog.url}`}</p>
-        <p>{`likes: ${blog.likes}`} <button onClick={like}>Like</button></p> 
+        <p>{`likes: ${blog.likes}`} <button onClick={like}>Like</button></p>
         {removeBlog()}
       </div>
     )
@@ -48,5 +49,11 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
       {details()}
     </div>
   )}
+
+Blog.PropTypes = {
+  blog: PropTypes.object.isRequired,
+  updateBlog: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired
+}
 
 export default Blog

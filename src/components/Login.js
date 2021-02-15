@@ -1,6 +1,8 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
+
 
 const Login = ({ setUser, setMessage }) => {
 
@@ -11,18 +13,18 @@ const Login = ({ setUser, setMessage }) => {
     event.preventDefault()
 
     try {
-      const loggedInUser = await loginService.login({username: userName, password}) 
+      const loggedInUser = await loginService.login({ username: userName, password })
       window.localStorage.setItem('user', JSON.stringify(loggedInUser))
       blogService.setToken(loggedInUser.token)
       console.log(loggedInUser)
       setUserName('')
       setPassword('')
       setMessage(`Welcome ${loggedInUser.name}`)
-      setTimeout(() => setMessage(null), 5000) 
+      setTimeout(() => setMessage(null), 5000)
       setUser(loggedInUser)
     } catch (e) {
       setMessage(`Error: ${e.response.data.error}`)
-      setTimeout(() => setMessage(null), 5000) 
+      setTimeout(() => setMessage(null), 5000)
     }
   }
 
@@ -35,7 +37,7 @@ const Login = ({ setUser, setMessage }) => {
           name="Username"
           value={userName}
           type="text"
-          onChange={({target}) => setUserName(target.value)}
+          onChange={({ target }) => setUserName(target.value)}
         />
       </div>
       <div>
@@ -44,12 +46,17 @@ const Login = ({ setUser, setMessage }) => {
           name="Password"
           value={password}
           type="password"
-          onChange={({target}) => setPassword(target.value)}
+          onChange={({ target }) => setPassword(target.value)}
         />
       </div>
       <button type="submit">login</button>
     </form>
   )
+}
+
+Login.PropTypes = {
+  setUser: PropTypes.func.isRequired,
+  setMessage: PropTypes.func.isRequired
 }
 
 export default Login
