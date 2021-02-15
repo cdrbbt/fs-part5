@@ -10,7 +10,7 @@ const getAll = () => {
 
 const create = async (blog) => {
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   }
   const res = await axios.post(baseUrl, blog, config)
   return res.data
@@ -19,7 +19,7 @@ const create = async (blog) => {
 const update = async (blog) => {
   const url = baseUrl.concat(blog.id)
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   }
   const res = await axios.put(url, blog, config)
   return res.data
@@ -29,7 +29,7 @@ const update = async (blog) => {
 const remove = async (blog) => {
   const url = baseUrl.concat(blog.id)
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   }
   const res = await axios.delete(url, config)
   console.log(res)

@@ -17,7 +17,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs.sort((a, b) => b.likes - a.likes))
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const App = () => {
       blogService.setToken(loggedInUser.token)
       setUser(loggedInUser)
     }
-  }, []) 
+  }, [])
 
   const logout = () => {
     window.localStorage.removeItem('user')
@@ -64,7 +64,7 @@ const App = () => {
       const newBlog = await blogService.update(updatedBlog)
 
       //blogs jump after like update due to sorting
-      const updatedBlogs = blogs.filter(b => b.id != blog.id).concat(newBlog)
+      const updatedBlogs = blogs.filter(b => b.id !== blog.id).concat(newBlog)
       setBlogs(updatedBlogs.sort((a,b) => b.likes - a.likes))
     } catch (e) {
       console.log(e)
@@ -94,7 +94,7 @@ const App = () => {
       setUser={setUser}
     />
   )
-  
+
   const blog = () => (
     <>
       <button onClick={logout}>Logout</button>

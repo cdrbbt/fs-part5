@@ -6,6 +6,7 @@ module.exports = {
     },
     'extends': [
         'eslint:recommended',
+        'plugin:react/recommended'
     ],
     'globals': {
         'Atomics': 'readonly',
@@ -48,5 +49,10 @@ module.exports = {
         ],
         "no-console": 0,
         "react/prop-types": 0   
-    }
+    },
+    "settings": {
+        "react": {
+            "version": "detect",
+        },
+    },
 }
