@@ -20,6 +20,7 @@ const BlogCreationFrom = ({ createBlog }) => {
       <div>
         title:
         <input
+          id="title"
           type="text"
           name="Title"
           value={title}
@@ -30,6 +31,7 @@ const BlogCreationFrom = ({ createBlog }) => {
       <div>
        author:
         <input
+          id="author"
           type="text"
           name="Author"
           value={author}
@@ -40,6 +42,7 @@ const BlogCreationFrom = ({ createBlog }) => {
       <div>
       url:
         <input
+          id="url"
           type="text"
           name="Url"
           value={url}
