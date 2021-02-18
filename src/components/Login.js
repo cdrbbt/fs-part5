@@ -29,7 +29,7 @@ const Login = ({ setUser, setMessage }) => {
   }
 
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleLogin} id="loginform">
       <h2>Login</h2>
       <div>
         username
