@@ -75,6 +75,13 @@ describe('Note app', function() {
         cy.contains('Like').click()
         cy.contains('likes: 1')
       })
+
+      it('the blog can be deleted', function() {
+        cy.visit('http://localhost:3000')
+        cy.contains('details').click()
+        cy.contains('delete').click()
+        cy.get('html').should('not.contain', blog.title)
+      })
     })
   })
 })
