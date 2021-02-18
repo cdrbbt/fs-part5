@@ -58,7 +58,9 @@ describe('Note app', function() {
       cy.get('#blogs').contains(blog.title)
     })
 
-    describe.only('when a blog exists', function() {
+
+    //could use more polish, not exactly correct with multiple blogs
+    describe('when a blog exists', function() {
       const blog = {
         title: 'cypress ex',
         url: 'localhost',
@@ -67,6 +69,8 @@ describe('Note app', function() {
       beforeEach(function(){
         console.log(blog)
         cy.postBlog(blog)
+        cy.postBlog({ ...blog, title:'blog2' })
+        cy.postBlog({ ...blog, title:'blog4' })
       })
 
       it('the blog can be liked', function() {
@@ -82,6 +86,33 @@ describe('Note app', function() {
         cy.contains('delete').click()
         cy.get('html').should('not.contain', blog.title)
       })
+    })
+
+    //hacked together not very well, would need to research jquery more
+    it.only('blogs are properly sorted', function() {
+      const blog = {
+        title: '0 likes',
+        url: 'localhost',
+        author: 'me'
+      }
+      cy.postBlog(blog)
+      cy.postBlog({ ...blog, title: '3 likes' })
+        .then( res => {
+          return cy.likeBlog({ ...res.body, likes: 3 })
+        })
+      cy.postBlog({ ...blog, title: '5 likes' })
+        .then( res => {
+          return cy.likeBlog({ ...res.body, likes: 5 })
+        })
+      
+      cy.visit('http://localhost:3000')
+      cy.get('.visibilityToggle').click({ multiple: true })
+      cy.get('.likes')
+        .then(likes => {
+          cy.get(likes[0]).contains(5)
+          cy.get(likes[1]).contains(3)
+          cy.get(likes[2]).contains(0)
+        })
     })
   })
 })

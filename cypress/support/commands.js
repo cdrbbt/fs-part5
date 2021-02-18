@@ -18,3 +18,8 @@ Cypress.Commands.add('postBlog', (blog) => {
   }
   return cy.request(req)
 })
+
+
+Cypress.Commands.add('likeBlog', (blog) => {
+  return cy.request('PUT',`http://localhost:3003/api/blogs/${blog.id}`, { ...blog, likes: blog.likes })
+})
