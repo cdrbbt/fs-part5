@@ -37,12 +37,7 @@ describe('Note app', function() {
 
   describe('when logged in', function () {
     beforeEach(function() {
-      cy.request('POST', 'http://localhost:3003/api/login', {
-        username: user.username, password: user.password
-      }).then(res => {
-        localStorage.setItem('user', JSON.stringify(res.body))
-        cy.visit('http://localhost:3000')
-      })
+      cy.login(user.username, user.password)
     })
 
     it('can create a blog', function() {
@@ -61,6 +56,25 @@ describe('Note app', function() {
       cy.contains(`Blog ${blog.title} by ${blog.author} created`)
 
       cy.get('#blogs').contains(blog.title)
+    })
+
+    describe.only('when a blog exists', function() {
+      const blog = {
+        title: 'cypress ex',
+        url: 'localhost',
+        author: 'me'
+      }
+      beforeEach(function(){
+        console.log(blog)
+        cy.postBlog(blog)
+      })
+
+      it('the blog can be liked', function() {
+        cy.visit('http://localhost:3000')
+        cy.contains('details').click()
+        cy.contains('Like').click()
+        cy.contains('likes: 1')
+      })
     })
   })
 })
